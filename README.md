@@ -2,6 +2,18 @@
 
 https://www.drupal.org/project/gtm_barebones
 
+## Usage
+
+This module uses a configuration-UI-less settings.
+
+You can choose to export and modify config, or utilise config overrides in `settings.php`:
+
+```php
+$config['gtm_barebones.settings']['container_id'] = 'GTM-ABCDEFGHIJK';
+$config['gtm_barebones.settings']['environment_id'] = 'env-123456';
+$config['gtm_barebones.settings']['environment_token'] = 'iBN8NANliiuqnAAi81LapqkkdUIjak';
+```
+
 ## License
 
 This program is free software; you can redistribute it and/or modify

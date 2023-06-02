@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\gtm_barebones\Hooks\GtmBarebonesHooks;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function gtm_barebones_page_attachments(array &$attachments): void {
+  /** @var \Drupal\gtm_barebones\Hooks\GtmBarebonesHooks $hooks */
+  $hooks = \Drupal::classResolver(GtmBarebonesHooks::class);
+  $hooks->pageAttachments($attachments);
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function gtm_barebones_page_top(array &$page_top): void {
+  /** @var \Drupal\gtm_barebones\Hooks\GtmBarebonesHooks $hooks */
+  $hooks = \Drupal::classResolver(GtmBarebonesHooks::class);
+  $hooks->pageTop($page_top);
+}
