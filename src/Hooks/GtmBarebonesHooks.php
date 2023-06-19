@@ -48,6 +48,10 @@ final class GtmBarebonesHooks implements ContainerInjectionInterface {
 
     $settings = $this->configFactory->get('gtm_barebones.settings');
     $containerId = $settings->get('container_id');
+    if (NULL === $containerId) {
+      return;
+    }
+
     $environmentId = $settings->get('environment_id');
     $environmentToken = $settings->get('environment_token');
     $attachments['#attached']['html_head'][] = [
@@ -80,6 +84,10 @@ final class GtmBarebonesHooks implements ContainerInjectionInterface {
 
     $settings = $this->configFactory->get('gtm_barebones.settings');
     $containerId = $settings->get('container_id');
+    if (NULL === $containerId) {
+      return;
+    }
+
     $environmentId = $settings->get('environment_id');
     $environmentToken = $settings->get('environment_token');
 
