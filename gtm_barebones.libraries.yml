@@ -1,6 +1,4 @@
 gtm:
   version: 1.x
   js:
-    js/gtm.js: { preprocess: false, minified: true, attributes: { defer: true } }
-  dependencies:
-    - core/drupalSettings
+    /gtm-load.js: { external: true, preprocess: false, minified: true, attributes: { defer: true } }

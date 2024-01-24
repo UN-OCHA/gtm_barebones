@@ -1,0 +1,6 @@
+gtm_barebones.gtm_load:
+  path: '/gtm-load.js'
+  defaults:
+    _controller: 'gtm_barebones.gtm_controller:getJs'
+  requirements:
+    _custom_access: 'gtm_barebones.gtm_controller:access'

@@ -46,18 +46,6 @@ final class GtmBarebonesHooks implements ContainerInjectionInterface {
       return;
     }
 
-    $settings = $this->configFactory->get('gtm_barebones.settings');
-    $containerId = $settings->get('container_id');
-    if (NULL === $containerId) {
-      return;
-    }
-
-    $environmentId = $settings->get('environment_id');
-    $environmentToken = $settings->get('environment_token');
-
-    $attachments['#attached']['drupalSettings']['gtm_barebones']['container_id'] = $containerId;
-    $attachments['#attached']['drupalSettings']['gtm_barebones']['environment_id'] = $environmentId;
-    $attachments['#attached']['drupalSettings']['gtm_barebones']['environment_token'] = $environmentToken;
     $attachments['#attached']['library'][] = 'gtm_barebones/gtm';
 
     // Cacheability as exclusions vary.

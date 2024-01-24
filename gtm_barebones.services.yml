@@ -1,0 +1,3 @@
+services:
+  gtm_barebones.gtm_controller:
+    class: \Drupal\gtm_barebones\Controller\GtmBarebonesController
