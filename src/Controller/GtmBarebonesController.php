@@ -24,7 +24,8 @@ class GtmBarebonesController extends ControllerBase {
     $settings = \Drupal::config('gtm_barebones.settings');
     $containerId = $settings->get('container_id');
 
-    return AccessResult::allowedIf($containerId !== NULL);
+    return AccessResult::allowedIf($containerId !== NULL)
+      ->addCacheableDependency($containerId);
   }
 
 
