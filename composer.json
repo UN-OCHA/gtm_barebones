@@ -1,6 +1,6 @@
 {
-    "name": "drupal/gtm_barebones",
-    "description": "Just the essentials.",
+    "name": "unocha/gtm_barebones",
+    "description": "OCHA fork of GTM Barebones.",
     "type": "drupal-module",
     "require": {
         "php": ">=8.1",

@@ -1,0 +1,4 @@
+gtm:
+  version: 1.x
+  js:
+    /gtm-load.js: { external: true, preprocess: false, minified: true, attributes: { defer: true } }
