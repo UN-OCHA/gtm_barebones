@@ -1,8 +1,6 @@
 name: Barebones GTM (OCHA)
 type: module
 description: Just the essentials.
-core_version_requirement: ^9.5 || ^10
-php: 8.1
+core_version_requirement: ^10.2 || ^11
+php: 8.2
 package: SEO
-dependencies:
-  - drupal:system (>=8.6)
