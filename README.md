@@ -15,6 +15,16 @@ $config['gtm_barebones.settings']['environment_id'] = 'env-123456';
 $config['gtm_barebones.settings']['environment_token'] = 'iBN8NANliiuqnAAi81LapqkkdUIjak';
 ```
 
+# CSP (Content Security Policy)
+
+If your site enforces CSP, you must add configure CSP directives.
+
+Consider using the [CSP module](https://www.drupal.org/project/csp)
+
+Then add the directives in https://developers.google.com/tag-platform/security/guides/csp
+
+Note the extra directives required for things like Preview mode, and Google Analytics integration.
+
 ## License
 
 This program is free software; you can redistribute it and/or modify

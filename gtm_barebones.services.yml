@@ -1,3 +1,9 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Drupal\gtm_barebones\Hooks\GtmBarebonesHooks: ~
+
   gtm_barebones.gtm_controller:
     class: \Drupal\gtm_barebones\Controller\GtmBarebonesController

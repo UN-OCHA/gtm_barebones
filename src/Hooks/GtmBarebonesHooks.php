@@ -6,33 +6,21 @@ namespace Drupal\gtm_barebones\Hooks;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\AdminContext;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Hooks.
  */
-final class GtmBarebonesHooks implements ContainerInjectionInterface {
+final class GtmBarebonesHooks {
 
   /**
    * Constructor.
    */
-  private function __construct(
+  public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     protected AdminContext $adminContext,
   ) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  final public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('router.admin_context'),
-    );
   }
 
   /**
