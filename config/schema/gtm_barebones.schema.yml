@@ -3,15 +3,19 @@ gtm_barebones.settings:
   label: 'GTM Barebones Settings'
   mapping:
     containers:
-      type: config_object
-      label: 'GTM Container'
-      mapping:
-        container_id:
-          type: string
-          label: 'GTM Container ID'
-        environment_id:
-          type: string
-          label: 'Environment ID'
-        environment_token:
-          type: string
-          label: 'Environment token'
+      type: sequence
+      label: 'GTM Containers'
+      sequence:
+        type: mapping
+        label: 'GTM Container'
+        mapping:
+          container_id:
+            type: string
+            label: 'GTM Container ID'
+          environment_id:
+            type: string
+            label: 'Environment ID'
+          environment_token:
+            type: string
+            label: 'Environment token'
+
