@@ -1,3 +1,5 @@
-container_id: ''
-environment_id: ''
-environment_token: ''
+containers:
+  default:
+    container_id: ''
+    environment_id: ''
+    environment_token: ''

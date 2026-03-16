@@ -53,27 +53,31 @@ final class GtmBarebonesHooks {
     }
 
     $settings = $this->configFactory->get('gtm_barebones.settings');
-    $containerId = $settings->get('container_id');
-    if (NULL === $containerId) {
+    $containers = $settings->get('containers');
+    if (empty($containers)) {
       return;
     }
 
-    $environmentId = $settings->get('environment_id');
-    $environmentToken = $settings->get('environment_token');
+    // Cycle through each defined container.
+    foreach ($containers as $container => $setting) {
+      $containerId = $setting['container_id'];
+      $environmentId = $setting['environment_id'] ?? '';
+      $environmentToken = $setting['environment_token'] ?? '';
 
-    $page_top['gtm_barebones_gtm_noscript_tag'] = [
-      '#type' => 'inline_template',
-      '#template' => <<<TEMPLATE
-        <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id={{ containerId }}&gtm_auth={{ environmentToken }}&gtm_preview={{ environmentId }}&gtm_cookies_win=x" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-        </noscript>
-        TEMPLATE,
-      '#context' => [
-        'containerId' => $containerId,
-        'environmentToken' => $environmentToken,
-        'environmentId' => $environmentId,
-      ],
-    ];
+      $page_top['gtm_barebones_' . $container . '_gtm_noscript_tag'] = [
+        '#type' => 'inline_template',
+        '#template' => <<<TEMPLATE
+          <noscript>
+          <iframe src="https://www.googletagmanager.com/ns.html?id={{ containerId }}&gtm_auth={{ environmentToken }}&gtm_preview={{ environmentId }}&gtm_cookies_win=x" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+          </noscript>
+          TEMPLATE,
+        '#context' => [
+          'containerId' => $containerId,
+          'environmentToken' => $environmentToken,
+          'environmentId' => $environmentId,
+        ],
+      ];
+    }
   }
 
   private function isExcluding(): bool {

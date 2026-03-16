@@ -22,10 +22,16 @@ class GtmBarebonesController extends ControllerBase {
    */
   public function access(): AccessResult {
     $settings = \Drupal::config('gtm_barebones.settings');
-    $containerId = $settings->get('container_id');
+    $containers = $settings->get('containers');
 
-    return AccessResult::allowedIf($containerId !== NULL)
-      ->addCacheableDependency($containerId);
+    $result = new AccessResult();
+    $result->allowedIf(!empty($containers));
+
+    foreach ($containers as $container => $setting) {
+        $result->addCacheableDependency($setting['container_id']);
+    }
+
+    return $result;
   }
 
 
@@ -36,10 +42,7 @@ class GtmBarebonesController extends ControllerBase {
    *   JS to load GTM.
    */
   public function getJs(): CacheableResponse {
-    $settings = \Drupal::config('gtm_barebones.settings');
-    $containerId = $settings->get('container_id');
-    $environmentId = $settings->get('environment_id');
-    $environmentToken = $settings->get('environment_token');
+    $content = '';
 
     $response = new CacheableResponse(
       'Content',
@@ -50,14 +53,23 @@ class GtmBarebonesController extends ControllerBase {
       ]
     );
 
-    // Build JS response with settings embedded.
-    $response->setContent(<<<JS
-      (function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$containerId', '$environmentToken', '$environmentId');
-    JS);
+    $settings = \Drupal::config('gtm_barebones.settings');
+    $containers = $settings->get('containers');
 
-    // Invalidate cache when config changes.
-    $response->addCacheableDependency($containerId);
+    foreach ($containers as $container => $setting) {
+      $containerId = $setting['container_id'];
+      $environmentId = $setting['environment_id'] ?? '';
+      $environmentToken = $setting['environment_token' ?? '';
 
+      // Build JS response with settings embedded.
+      $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$containerId', '$environmentToken', '$environmentId');";
+
+      // Invalidate cache when config changes.
+      $response->addCacheableDependency($containerId);
+
+    }
+
+    $respose->setContent($content);
     return $response;
   }
 }
