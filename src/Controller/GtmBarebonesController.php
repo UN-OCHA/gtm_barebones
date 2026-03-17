@@ -21,7 +21,7 @@ class GtmBarebonesController extends ControllerBase {
    *   The access result.
    */
   public function access(): AccessResult {
-    $settings = \Drupal::config('gtm_barebones.settings');
+    $settings = $this->config('gtm_barebones.settings');
     $containers = $settings->get('containers', []);
 
     $has_container = count(array_filter($containers, function ($container) {
