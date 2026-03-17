@@ -30,7 +30,7 @@ class GtmBarebonesController extends ControllerBase {
 
     // Only allowed if at least one container has a container ID.
     $result = AccessResult::allowedIf($has_container);
-    
+
     // Ensure access is recomputed when the config changes.
     $result->addCacheableDependency($settings);
 
@@ -59,16 +59,16 @@ class GtmBarebonesController extends ControllerBase {
     $settings = \Drupal::config('gtm_barebones.settings');
     $containers = $settings->get('containers');
 
-    foreach ($containers as $container => $setting) {
-      $containerId = $setting['container_id'];
-      $environmentId = $setting['environment_id'] ?? '';
-      $environmentToken = $setting['environment_token' ?? '';
+    foreach ($containers as $key => $container) {
+      $container_id = $container['container_id'];
+      $environment_id = $container['environment_id'] ?? '';
+      $environment_token = $container['environment_token' ?? '';
 
       // Build JS response with settings embedded.
-      $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$containerId', '$environmentToken', '$environmentId');";
+      $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$container_id', '$environment_id', '$environment_id');";
 
       // Invalidate cache when config changes.
-      $response->addCacheableDependency($containerId);
+      $response->addCacheableDependency($container_id);
 
     }
 
