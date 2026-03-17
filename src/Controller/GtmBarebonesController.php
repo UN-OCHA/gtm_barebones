@@ -56,7 +56,7 @@ class GtmBarebonesController extends ControllerBase {
       ]
     );
 
-    $settings = \Drupal::config('gtm_barebones.settings');
+    $settings = $this->config('gtm_barebones.settings');
     $containers = $settings->get('containers', []);
 
     foreach ($containers as $key => $container) {
