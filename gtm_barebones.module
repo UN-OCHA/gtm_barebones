@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Module file for GTM Barebones.
+ */
+
 declare(strict_types=1);
 
 use Drupal\gtm_barebones\Hooks\GtmBarebonesHooks;

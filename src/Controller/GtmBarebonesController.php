@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\gtm_barebones\Controller;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Cache\CacheableResponse;
 
 /**
@@ -37,11 +36,10 @@ class GtmBarebonesController extends ControllerBase {
     return $result;
   }
 
-
   /**
    * Return inline JS with embedded config.
    *
-   * @return CacheableResponse
+   * @return \Drupal\Core\Cache\CacheableResponse
    *   JS to load GTM.
    */
   public function getJs(): CacheableResponse {
@@ -59,19 +57,20 @@ class GtmBarebonesController extends ControllerBase {
     $settings = $this->config('gtm_barebones.settings');
     $containers = $settings->get('containers') ?? [];
 
-    foreach ($containers as $key => $container) {
+    foreach ($containers as $container) {
       $container_id = $container['container_id'];
       $environment_id = $container['environment_id'] ?? '';
-      $environment_token = $container['environment_token' ?? '';
+      $environment_token = $container['environment_token'] ?? '';
 
       // Build JS response with settings embedded.
-      $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$container_id', '$environment_id', '$environment_id');";
+      $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$container_id', '$environment_token', '$environment_id');";
     }
 
     // Invalidate cache when config changes.
     $response->addCacheableDependency($settings);
 
-    $respose->setContent($content);
+    $response->setContent($content);
     return $response;
   }
+
 }
