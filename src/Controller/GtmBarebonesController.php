@@ -66,10 +66,10 @@ class GtmBarebonesController extends ControllerBase {
 
       // Build JS response with settings embedded.
       $content .= "(function(w,d,s,l,i1,i2,i3){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i1+dl+'&gtm_auth='+i2+'&gtm_preview='+i3+'&gtm_cookies_win=x';var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window, document, 'script', 'dataLayer', '$container_id', '$environment_id', '$environment_id');";
-
-      // Invalidate cache when config changes.
-      $response->addCacheableDependency($container_id);
     }
+
+    // Invalidate cache when config changes.
+    $response->addCacheableDependency($settings);
 
     $respose->setContent($content);
     return $response;
