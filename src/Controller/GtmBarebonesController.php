@@ -57,7 +57,7 @@ class GtmBarebonesController extends ControllerBase {
     );
 
     $settings = $this->config('gtm_barebones.settings');
-    $containers = $settings->get('containers', []);
+    $containers = $settings->get('containers') ?? [];
 
     foreach ($containers as $key => $container) {
       $container_id = $container['container_id'];
