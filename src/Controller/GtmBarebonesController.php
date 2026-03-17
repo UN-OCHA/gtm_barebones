@@ -22,7 +22,7 @@ class GtmBarebonesController extends ControllerBase {
    */
   public function access(): AccessResult {
     $settings = \Drupal::config('gtm_barebones.settings');
-    $containers = $settings->get('containers');
+    $containers = $settings->get('containers', []);
 
     $has_container = count(array_filter($containers, function ($container) {
       return !empty($container['container_id']);
@@ -57,7 +57,7 @@ class GtmBarebonesController extends ControllerBase {
     );
 
     $settings = \Drupal::config('gtm_barebones.settings');
-    $containers = $settings->get('containers');
+    $containers = $settings->get('containers', []);
 
     foreach ($containers as $key => $container) {
       $container_id = $container['container_id'];
@@ -69,7 +69,6 @@ class GtmBarebonesController extends ControllerBase {
 
       // Invalidate cache when config changes.
       $response->addCacheableDependency($container_id);
-
     }
 
     $respose->setContent($content);
