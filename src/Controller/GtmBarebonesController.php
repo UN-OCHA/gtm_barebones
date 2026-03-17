@@ -22,7 +22,7 @@ class GtmBarebonesController extends ControllerBase {
    */
   public function access(): AccessResult {
     $settings = $this->config('gtm_barebones.settings');
-    $containers = $settings->get('containers', []);
+    $containers = $settings->get('containers') ?? [];
 
     $has_container = count(array_filter($containers, function ($container) {
       return !empty($container['container_id']);
