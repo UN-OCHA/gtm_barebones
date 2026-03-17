@@ -24,12 +24,15 @@ class GtmBarebonesController extends ControllerBase {
     $settings = \Drupal::config('gtm_barebones.settings');
     $containers = $settings->get('containers');
 
-    $result = new AccessResult();
-    $result->allowedIf(!empty($containers));
+    $has_container = count(array_filter($containers, function ($container) {
+      return !empty($container['container_id']);
+    })) >= 1;
 
-    foreach ($containers as $container => $setting) {
-        $result->addCacheableDependency($setting['container_id']);
-    }
+    // Only allowed if at least one container has a container ID.
+    $result = AccessResult::allowedIf($has_container);
+    
+    // Ensure access is recomputed when the config changes.
+    $result->addCacheableDependency($settings);
 
     return $result;
   }
