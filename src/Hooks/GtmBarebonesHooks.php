@@ -59,22 +59,31 @@ final class GtmBarebonesHooks {
     }
 
     // Cycle through each defined container.
-    foreach ($containers as $container => $setting) {
-      $containerId = $setting['container_id'];
-      $environmentId = $setting['environment_id'] ?? '';
-      $environmentToken = $setting['environment_token'] ?? '';
+    foreach ($containers as $key => $container) {
+      $container_id = $container['container_id'];
+      $environment_id = $container['environment_id'] ?? '';
+      $environment_token = $container['environment_token'] ?? '';
 
-      $page_top['gtm_barebones_' . $container . '_gtm_noscript_tag'] = [
+      if (empty($container_id)) {
+          continue;
+      }
+
+      $page_top['gtm_barebones_' . $key . '_gtm_noscript_tag'] = [
         '#type' => 'inline_template',
         '#template' => <<<TEMPLATE
           <noscript>
-          <iframe src="https://www.googletagmanager.com/ns.html?id={{ containerId }}&gtm_auth={{ environmentToken }}&gtm_preview={{ environmentId }}&gtm_cookies_win=x" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+          <iframe src="https://www.googletagmanager.com/ns.html?id={{ container_id }}&gtm_auth={{ environment_token }}&gtm_preview={{ environment_id }}&gtm_cookies_win=x" height="0" width="0" style="display:none;visibility:hidden"></iframe>
           </noscript>
           TEMPLATE,
         '#context' => [
-          'containerId' => $containerId,
-          'environmentToken' => $environmentToken,
-          'environmentId' => $environmentId,
+          'container_id' => $container_id,
+          'environment_token' => $environment_token,
+          'environment_id' => $environment_id,
+        ],
+        '#cache' => [
+          'contexts' => $settings->getCacheContexts(),
+          'tags' => $settings->getCacheTags(),
+          'max-age' => $settings->getCacheMaxAge(),
         ],
       ];
     }
