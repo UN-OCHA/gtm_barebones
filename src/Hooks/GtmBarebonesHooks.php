@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\gtm_barebones\Hooks;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\AdminContext;
 
 /**
@@ -65,7 +64,7 @@ final class GtmBarebonesHooks {
       $environment_token = $container['environment_token'] ?? '';
 
       if (empty($container_id)) {
-          continue;
+        continue;
       }
 
       $page_top['gtm_barebones_' . $key . '_gtm_noscript_tag'] = [
@@ -89,6 +88,12 @@ final class GtmBarebonesHooks {
     }
   }
 
+  /**
+   * Check if the current route is an admin route.
+   *
+   * @return bool
+   *   True if the current route is an admin route, false otherwise.
+   */
   private function isExcluding(): bool {
     return $this->adminContext->isAdminRoute() === TRUE;
   }
